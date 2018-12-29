@@ -1,4 +1,5 @@
 const internal = require('../utils/private-props');
+const ERR_MSG = require('../utils/errors');
 
 const INIT_CAPACITY = 8;
 const MINIMUN_CAPACITY = 2;
@@ -6,29 +7,29 @@ const MINIMUN_CAPACITY = 2;
 class ArrayDeque {
   constructor(capacity = INIT_CAPACITY) {
     if (!Number.isSafeInteger(capacity) || capacity <= 0) {
-      throw new Error('Invalid capacity value');
+      throw new Error(ERR_MSG.CAPACITY);
     }
 
     const cap = (capacity < MINIMUN_CAPACITY) ? MINIMUN_CAPACITY : capacity;
     internal(this).deque = Array(cap).fill(null);
     internal(this).front = 0;
-    internal(this).rare = 0;
+    internal(this).rear = 0;
     internal(this).length = 0;
     internal(this).resize = () => {
       const size = internal(this).deque.length * 2;
       const deque = Array(size).fill(null);
-      const { rare } = internal(this);
+      const { rear } = internal(this);
       let { front } = internal(this);
       let idx = 0;
 
-      while (front !== rare) {
+      while (front !== rear) {
         deque[idx] = internal(this).deque[front];
         front = (front + 1) % size;
         idx += 1;
       }
 
       internal(this).front = 0;
-      internal(this).rare = idx - 1;
+      internal(this).rear = idx - 1;
       internal(this).deque = deque;
     };
   }
@@ -44,12 +45,12 @@ class ArrayDeque {
   clear() {
     internal(this).deque = Array(INIT_CAPACITY).fill(null);
     internal(this).front = 0;
-    internal(this).rare = 0;
+    internal(this).rear = 0;
     internal(this).length = 0;
   }
 
   peek() {
-    return this.isEmpty() ? null : internal(this).deque[internal(this).rare];
+    return this.isEmpty() ? null : internal(this).deque[internal(this).rear];
   }
 
   peekFront() {
@@ -58,11 +59,11 @@ class ArrayDeque {
 
   push(elem) {
     if (typeof elem === 'undefined') {
-      throw new Error('No argument found');
+      throw new Error(ERR_MSG.NO_ARGUMENT);
     }
 
     if (this.isEmpty()) {
-      internal(this).deque[internal(this).rare] = elem;
+      internal(this).deque[internal(this).rear] = elem;
       internal(this).length += 1;
       return;
     }
@@ -71,8 +72,8 @@ class ArrayDeque {
       internal(this).resize();
     }
 
-    internal(this).rare = (internal(this).rare + 1) % internal(this).deque.length;
-    internal(this).deque[internal(this).rare] = elem;
+    internal(this).rear = (internal(this).rear + 1) % internal(this).deque.length;
+    internal(this).deque[internal(this).rear] = elem;
     internal(this).length += 1;
   }
 
@@ -81,18 +82,18 @@ class ArrayDeque {
       return null;
     }
 
-    const rarePrev = internal(this).rare;
-    internal(this).rare = (
-      internal(this).rare + internal(this).deque.length - 1
+    const rearPrev = internal(this).rear;
+    internal(this).rear = (
+      internal(this).rear + internal(this).deque.length - 1
     ) % internal(this).deque.length;
 
     internal(this).length -= 1;
-    return internal(this).deque[rarePrev];
+    return internal(this).deque[rearPrev];
   }
 
   pushFront(elem) {
     if (typeof elem === 'undefined') {
-      throw new Error('No argument found');
+      throw new Error(ERR_MSG.NO_ARGUMENT);
     }
 
     if (this.isEmpty()) {
@@ -118,10 +119,10 @@ class ArrayDeque {
       return null;
     }
 
-    const rareFront = internal(this).front;
+    const prevFront = internal(this).front;
     internal(this).front = (internal(this).front + 1) % internal(this).deque.length;
     internal(this).length -= 1;
-    return internal(this).deque[rareFront];
+    return internal(this).deque[prevFront];
   }
 }
 

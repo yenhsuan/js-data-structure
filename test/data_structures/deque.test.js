@@ -1,5 +1,6 @@
 const should = require('should');
 const Deque = require('../../src/data_structures/deque');
+const ERR_MSG = require('../../src/utils/errors');
 
 describe('# Deque', () => {
   describe('constructor', () => {
@@ -12,10 +13,17 @@ describe('# Deque', () => {
       should(deque.peekFront()).be.equal(null);
     });
 
-    it('should throw error after given a invalid capacity', () => {
-      (() => new Deque(-1)).should.throw('Invalid capacity value');
-      (() => new Deque(null)).should.throw('Invalid capacity value');
-      (() => new Deque('some string')).should.throw('Invalid capacity value');
+    it('should throw error if given a invalid capacity', () => {
+      (() => new Deque(-1)).should.throw(ERR_MSG.CAPACITY);
+      (() => new Deque(null)).should.throw(ERR_MSG.CAPACITY);
+      (() => new Deque('some string')).should.throw(ERR_MSG.CAPACITY);
+    });
+  });
+
+  describe('push/pop', () => {
+    it('should throw error if no argument given (push)', () => {
+      (() => new Deque().push()).should.throw(ERR_MSG.NO_ARGUMENT);
+      (() => new Deque(3).push()).should.throw(ERR_MSG.NO_ARGUMENT);
     });
   });
 
