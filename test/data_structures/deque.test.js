@@ -18,4 +18,31 @@ describe('# Deque', () => {
       (() => new Deque('some string')).should.throw('Invalid capacity value');
     });
   });
+
+  describe('isEmpty', () => {
+    const deque = new Deque();
+    it('should return true if a deque is empty', () => {
+      deque.isEmpty().should.be.True();
+    });
+
+    it('should return false if a deque is empty', () => {
+      deque.push(1);
+      deque.isEmpty().should.be.False();
+    });
+  });
+
+  describe('size', () => {
+    it('should return correct size', () => {
+      const deque = new Deque(2);
+      deque.push('string');
+      deque.size().should.be.equal(1);
+
+      deque.push('another string');
+      deque.size().should.be.equal(2);
+
+      deque.push(3);
+      deque.pushFront(4);
+      deque.size().should.be.equal(4);
+    });
+  });
 });
