@@ -63,6 +63,7 @@ class ArrayDeque {
 
     if (this.isEmpty()) {
       internal(this).deque[internal(this).rare] = elem;
+      internal(this).length += 1;
       return;
     }
 
@@ -96,6 +97,7 @@ class ArrayDeque {
 
     if (this.isEmpty()) {
       internal(this).deque[internal(this).front] = elem;
+      internal(this).length += 1;
       return;
     }
 
