@@ -1,0 +1,33 @@
+{
+  "name": "js-data-structure",
+  "version": "1.0.0",
+  "description": "Data structure library for JavaScript",
+  "main": "index.js",
+  "scripts": {
+    "lint": "./node_modules/.bin/eslint ./**/*.js",
+    "test": "./node_modules/mocha/bin/mocha ./**/*.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yenhsuan/js-data-structure.git"
+  },
+  "keywords": [
+    "JavaScript",
+    "ES6",
+    "Data Structure"
+  ],
+  "author": "Terry Chen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yenhsuan/js-data-structure/issues"
+  },
+  "homepage": "https://github.com/yenhsuan/js-data-structure#readme",
+  "devDependencies": {
+    "eslint": "^5.11.1",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-mocha": "^5.2.0",
+    "mocha": "^5.2.0",
+    "should": "^13.2.3"
+  }
+}
