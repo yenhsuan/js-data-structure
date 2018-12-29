@@ -7,4 +7,4 @@ const classPrivateProps = (key) => {
   return privateProps.get(key);
 };
 
-module.export = classPrivateProps;
+module.exports = classPrivateProps;
