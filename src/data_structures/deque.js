@@ -6,7 +6,7 @@ const MINIMUN_CAPACITY = 2;
 class ArrayDeque {
   constructor(capacity = INIT_CAPACITY) {
     if (!Number.isSafeInteger(capacity) || capacity <= 0) {
-      throw new Error('Invalid initial capacity');
+      throw new Error('Invalid capacity value');
     }
 
     const cap = (capacity < MINIMUN_CAPACITY) ? MINIMUN_CAPACITY : capacity;
