@@ -125,6 +125,23 @@ class ArrayDeque {
     internal(this).length -= 1;
     return internal(this).deque[prevFront];
   }
+
+  toString() {
+    if (this.isEmpty()) {
+      return '';
+    }
+
+    const { front, rear } = internal(this);
+    const temp = [];
+
+    let iterator = front;
+    while (iterator !== rear) {
+      temp.push(internal(this).deque[iterator]);
+      iterator = (iterator + 1) % this.size();
+    }
+    temp.push(this.peek());
+    return temp.toString();
+  }
 }
 
 module.exports = ArrayDeque;
