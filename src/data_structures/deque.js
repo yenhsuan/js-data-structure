@@ -24,12 +24,13 @@ class ArrayDeque {
 
       while (front !== rear) {
         deque[idx] = internal(this).deque[front];
-        front = (front + 1) % size;
+        front = (front + 1) % this.size();
         idx += 1;
       }
 
+      deque[idx] = internal(this).deque[rear];
       internal(this).front = 0;
-      internal(this).rear = idx - 1;
+      internal(this).rear = idx;
       internal(this).deque = deque;
     };
   }
