@@ -137,7 +137,7 @@ class ArrayDeque {
     let iterator = front;
     while (iterator !== rear) {
       temp.push(internal(this).deque[iterator]);
-      iterator = (iterator + 1) % this.size();
+      iterator = (iterator + 1) % internal(this).deque.length;
     }
     temp.push(this.peek());
     return temp.toString();
