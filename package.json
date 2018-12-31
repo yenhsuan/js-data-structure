@@ -7,7 +7,7 @@
     "lint": "./node_modules/.bin/eslint './**/*.js' --ignore-path .gitignore",
     "test": "./node_modules/mocha/bin/mocha ./**/*.test.js",
     "cover": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha ./test/**/*.test.js",
-    "coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls"
+    "coveralls": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha ./test/**/*.test.js --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
   },
   "repository": {
     "type": "git",
