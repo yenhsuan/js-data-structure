@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "lint": "./node_modules/.bin/eslint ./**/*.js",
-    "test": "./node_modules/mocha/bin/mocha ./**/*.test.js"
+    "test": "./node_modules/mocha/bin/mocha ./**/*.test.js",
+    "cover": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha ./test/**/*.test.js",
+    "coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls"
   },
   "repository": {
     "type": "git",
@@ -23,11 +25,14 @@
   },
   "homepage": "https://github.com/yenhsuan/js-data-structure#readme",
   "devDependencies": {
+    "coveralls": "^3.0.2",
     "eslint": "^5.11.1",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-mocha": "^5.2.0",
+    "istanbul": "^0.4.5",
     "mocha": "^5.2.0",
+    "mocha-lcov-reporter": "^1.3.0",
     "should": "^13.2.3"
   }
 }
