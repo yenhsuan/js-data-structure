@@ -2,7 +2,7 @@ const internal = require('../utils/private-props');
 const ERR_MSG = require('../utils/errors');
 
 const INIT_CAPACITY = 8;
-const MINIMUN_CAPACITY = 2;
+const MINIMUM_CAPACITY = 2;
 
 class ArrayDeque {
   constructor(capacity = INIT_CAPACITY) {
@@ -10,7 +10,7 @@ class ArrayDeque {
       throw new Error(ERR_MSG.CAPACITY);
     }
 
-    const cap = (capacity < MINIMUN_CAPACITY) ? MINIMUN_CAPACITY : capacity;
+    const cap = Math.min(capacity, MINIMUM_CAPACITY);
     internal(this).deque = Array(cap).fill(null);
     internal(this).front = 0;
     internal(this).rear = 0;
