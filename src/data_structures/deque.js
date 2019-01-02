@@ -4,6 +4,27 @@ const ERR_MSG = require('../utils/errors');
 const INIT_CAPACITY = 8;
 const MINIMUM_CAPACITY = 2;
 
+const privateMethods = {
+  resize: function doubleDequeSize() {
+    const size = internal(this).deque.length * 2;
+    const deque = Array(size).fill(null);
+    const { rear } = internal(this);
+    let { front } = internal(this);
+    let idx = 0;
+
+    while (front !== rear) {
+      deque[idx] = internal(this).deque[front];
+      front = (front + 1) % this.size();
+      idx += 1;
+    }
+
+    deque[idx] = internal(this).deque[rear];
+    internal(this).front = 0;
+    internal(this).rear = idx;
+    internal(this).deque = deque;
+  },
+};
+
 class ArrayDeque {
   constructor(capacity = INIT_CAPACITY) {
     if (!Number.isSafeInteger(capacity) || capacity <= 0) {
@@ -15,24 +36,6 @@ class ArrayDeque {
     internal(this).front = 0;
     internal(this).rear = 0;
     internal(this).length = 0;
-    internal(this).resize = () => {
-      const size = internal(this).deque.length * 2;
-      const deque = Array(size).fill(null);
-      const { rear } = internal(this);
-      let { front } = internal(this);
-      let idx = 0;
-
-      while (front !== rear) {
-        deque[idx] = internal(this).deque[front];
-        front = (front + 1) % this.size();
-        idx += 1;
-      }
-
-      deque[idx] = internal(this).deque[rear];
-      internal(this).front = 0;
-      internal(this).rear = idx;
-      internal(this).deque = deque;
-    };
   }
 
   size() {
@@ -70,7 +73,7 @@ class ArrayDeque {
     }
 
     if (this.size() === internal(this).deque.length) {
-      internal(this).resize();
+      privateMethods.resize.apply(this);
     }
 
     internal(this).rear = (internal(this).rear + 1) % internal(this).deque.length;
@@ -104,7 +107,7 @@ class ArrayDeque {
     }
 
     if (this.size() === internal(this).deque.length) {
-      internal(this).resize();
+      privateMethods.resize.apply(this);
     }
 
     internal(this).front = (
