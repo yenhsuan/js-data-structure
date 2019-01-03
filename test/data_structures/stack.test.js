@@ -65,4 +65,21 @@ describe('# Stack', () => {
       should(stack.pop()).be.Null();
     });
   });
+
+  describe('toString', () => {
+    it('should return empty string if stack is empty', () => {
+      const stack = new Stack();
+      stack.toString().should.be.equal('');
+    });
+
+    it('should return the same format as Array.toString()', () => {
+      const array = ['Javascript', 'Data', 'Structure'];
+      const stack = new Stack();
+      array.forEach((elem) => {
+        stack.push(elem);
+      });
+
+      stack.toString().should.be.equal(array.toString());
+    });
+  });
 });
