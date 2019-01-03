@@ -78,7 +78,6 @@ describe('# Stack', () => {
       array.forEach((elem) => {
         stack.push(elem);
       });
-
       stack.toString().should.be.equal(array.toString());
     });
   });
