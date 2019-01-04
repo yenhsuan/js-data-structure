@@ -2,13 +2,6 @@ const internal = require('../utils/private-props');
 const ERR_MSG = require('../utils/errors');
 
 /* helpers */
-const defaultComparator = (self, other) => {
-  if (self === other) {
-    return 0;
-  }
-  return self > other ? 1 : -1;
-};
-
 const parentIdx = (idx) => {
   if (idx === 0) {
     return undefined;
@@ -38,12 +31,19 @@ const privateMethods = {
     }
 
     let parent = parentIdx(idx);
-    let child = idx;
+    let cur = idx;
 
-    while (parent !== undefined && internal(this).cmp(child, parent) < 0) {
-      privateMethods.swap(child, parent);
-      child = parent;
-      parent = parentIdx(idx);
+    while (parent !== undefined) {
+      const curVal = internal(this).elems[cur];
+      const parentVal = internal(this).elems[parent];
+
+      if (internal(this).cmp(curVal, parentVal) < 0) {
+        privateMethods.swap.apply(this, [cur, parent]);
+        cur = parent;
+        parent = parentIdx(idx);
+      } else {
+        break;
+      }
     }
   },
   siftDown: function moveElememtDownInHeap(idx) {
@@ -51,23 +51,27 @@ const privateMethods = {
       return;
     }
 
-    let parent = idx;
-    let left = leftChildIdx(parent, internal(this).length);
-    let right = rightChildIdx(parent, internal(this).length);
+    let cur = idx;
+    let left = leftChildIdx(cur, internal(this).length);
+    let right = rightChildIdx(cur, internal(this).length);
 
     while ((left !== undefined) || (right !== undefined)) {
-      if (left !== undefined && internal(this).cmp(parent, left) > 0) {
-        privateMethods.swap(parent, left).apply(this);
-        parent = left;
-      } else if (right !== undefined && internal(this).cmp(parent, right) > 0) {
-        privateMethods.swap(parent, right).apply(this);
-        parent = right;
+      const curVal = internal(this).elems[cur];
+      const leftVal = internal(this).elems[left];
+      const rightVal = internal(this).elems[right];
+
+      if (left !== undefined && internal(this).cmp(curVal, leftVal) > 0) {
+        privateMethods.swap.apply(this, [cur, left]);
+        cur = left;
+      } else if (right !== undefined && internal(this).cmp(curVal, rightVal) > 0) {
+        privateMethods.swap.apply(this, [cur, right]);
+        cur = right;
       } else {
         break;
       }
 
-      left = leftChildIdx(parent, internal(this).length);
-      right = rightChildIdx(parent, internal(this).length);
+      left = leftChildIdx(cur, internal(this).length);
+      right = rightChildIdx(cur, internal(this).length);
     }
   },
   swap: function swapTwoNodeInHeap(selfIdx, otherIdx) {
@@ -78,7 +82,11 @@ const privateMethods = {
 };
 
 class Heap {
-  constructor(cmp = defaultComparator) {
+  constructor(cmp) {
+    if (cmp === undefined) {
+      throw new TypeError(ERR_MSG.NO_COMPARATOR);
+    }
+
     internal(this).cmp = cmp;
     internal(this).elems = [];
   }
@@ -96,7 +104,7 @@ class Heap {
       throw new TypeError(ERR_MSG.NO_ARGUMENT);
     }
     internal(this).elems.push(elem);
-    privateMethods.siftUp.apply(this);
+    privateMethods.siftUp.apply(this, [this.size() - 1]);
   }
 
   pop() {
@@ -105,14 +113,14 @@ class Heap {
     }
 
     const first = this.peek();
-    const last = internal(this.elems).pop();
+    const last = internal(this).elems.pop();
 
     if (first === last) {
       return first;
     }
 
-    internal(this.elems)[0] = last;
-    privateMethods.siftDown.apply(this);
+    internal(this).elems[0] = last;
+    privateMethods.siftDown.apply(this, [0]);
     return first;
   }
 
