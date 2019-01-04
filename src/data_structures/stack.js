@@ -28,6 +28,10 @@ class Stack {
   peek() {
     return this.isEmpty() ? null : internal(this).array[this.size() - 1];
   }
+
+  toString() {
+    return this.isEmpty() ? '' : internal(this).array.toString();
+  }
 }
 
 module.exports = Stack;
