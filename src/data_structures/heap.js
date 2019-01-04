@@ -30,48 +30,39 @@ const privateMethods = {
       return;
     }
 
+    const { elems, cmp } = internal(this);
     let parent = parentIdx(idx);
     let cur = idx;
 
-    while (parent !== undefined) {
-      const curVal = internal(this).elems[cur];
-      const parentVal = internal(this).elems[parent];
-
-      if (internal(this).cmp(curVal, parentVal) < 0) {
-        privateMethods.swap.apply(this, [cur, parent]);
-        cur = parent;
-        parent = parentIdx(idx);
-      } else {
-        break;
-      }
+    while (parent !== undefined && cmp(elems[cur], elems[parent]) < 0) {
+      privateMethods.swap.apply(this, [cur, parent]);
+      cur = parent;
+      parent = parentIdx(idx);
     }
   },
   siftDown: function moveElememtDownInHeap(idx) {
-    if (idx > internal(this).elems.length - 1) {
+    if (idx > this.size() - 1) {
       return;
     }
 
+    const { elems, cmp } = internal(this);
     let cur = idx;
-    let left = leftChildIdx(cur, internal(this).length);
-    let right = rightChildIdx(cur, internal(this).length);
+    let left = leftChildIdx(cur, this.size());
+    let right = rightChildIdx(cur, this.size());
 
     while ((left !== undefined) || (right !== undefined)) {
-      const curVal = internal(this).elems[cur];
-      const leftVal = internal(this).elems[left];
-      const rightVal = internal(this).elems[right];
-
-      if (left !== undefined && internal(this).cmp(curVal, leftVal) > 0) {
+      if (left !== undefined && cmp(elems[cur], elems[left]) > 0) {
         privateMethods.swap.apply(this, [cur, left]);
         cur = left;
-      } else if (right !== undefined && internal(this).cmp(curVal, rightVal) > 0) {
+      } else if (right !== undefined && cmp(elems[cur], elems[right]) > 0) {
         privateMethods.swap.apply(this, [cur, right]);
         cur = right;
       } else {
         break;
       }
 
-      left = leftChildIdx(cur, internal(this).length);
-      right = rightChildIdx(cur, internal(this).length);
+      left = leftChildIdx(cur, this.size());
+      right = rightChildIdx(cur, this.size());
     }
   },
   swap: function swapTwoNodeInHeap(selfIdx, otherIdx) {
