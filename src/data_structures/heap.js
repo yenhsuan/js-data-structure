@@ -51,7 +51,7 @@ const privateMethods = {
       if (cmp(elems[cur], elems[minChild]) > 0) {
         privateMethods.swap.apply(this, [cur, minChild]);
         cur = minChild;
-      } else {        
+      } else {
         break;
       }
 
