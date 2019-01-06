@@ -26,10 +26,6 @@ const rightChildIdx = (idx, len) => {
 /* private methods */
 const privateMethods = {
   siftUp: function moveElememtUpInHeap(idx) {
-    if (idx === 0) {
-      return;
-    }
-
     const { elems, cmp } = internal(this);
     let parent = parentIdx(idx);
     let cur = idx;
@@ -37,27 +33,25 @@ const privateMethods = {
     while (parent !== undefined && cmp(elems[cur], elems[parent]) < 0) {
       privateMethods.swap.apply(this, [cur, parent]);
       cur = parent;
-      parent = parentIdx(idx);
+      parent = parentIdx(cur);
     }
   },
   siftDown: function moveElememtDownInHeap(idx) {
-    if (idx > this.size() - 1) {
-      return;
-    }
-
     const { elems, cmp } = internal(this);
     let cur = idx;
     let left = leftChildIdx(cur, this.size());
     let right = rightChildIdx(cur, this.size());
 
-    while ((left !== undefined) || (right !== undefined)) {
-      if (left !== undefined && cmp(elems[cur], elems[left]) > 0) {
-        privateMethods.swap.apply(this, [cur, left]);
-        cur = left;
-      } else if (right !== undefined && cmp(elems[cur], elems[right]) > 0) {
-        privateMethods.swap.apply(this, [cur, right]);
-        cur = right;
-      } else {
+    while (elems[left] !== undefined) {
+      let minChild = left;
+      if (elems[right] !== undefined) {
+        minChild = cmp(elems[left], elems[right]) <= 0 ? left : right;
+      }
+
+      if (cmp(elems[cur], elems[minChild]) > 0) {
+        privateMethods.swap.apply(this, [cur, minChild]);
+        cur = minChild;
+      } else {        
         break;
       }
 
