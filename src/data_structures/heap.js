@@ -9,19 +9,8 @@ const parentIdx = (idx) => {
   return Math.floor((idx - 1) / 2);
 };
 
-const leftChildIdx = (idx, len) => {
-  if (idx > len - 1) {
-    return undefined;
-  }
-  return idx * 2 + 1;
-};
-
-const rightChildIdx = (idx, len) => {
-  if (idx > len - 1) {
-    return undefined;
-  }
-  return idx * 2 + 2;
-};
+const leftChildIdx = idx => idx * 2 + 1;
+const rightChildIdx = idx => idx * 2 + 2;
 
 /* private methods */
 const privateMethods = {
@@ -39,12 +28,12 @@ const privateMethods = {
   siftDown: function moveElememtDownInHeap(idx) {
     const { elems, cmp } = internal(this);
     let cur = idx;
-    let left = leftChildIdx(cur, this.size());
-    let right = rightChildIdx(cur, this.size());
+    let left = leftChildIdx(cur);
+    let right = rightChildIdx(cur);
 
-    while (elems[left] !== undefined) {
+    while (left < this.size()) {
       let minChild = left;
-      if (elems[right] !== undefined) {
+      if (right < this.size()) {
         minChild = cmp(elems[left], elems[right]) <= 0 ? left : right;
       }
 
