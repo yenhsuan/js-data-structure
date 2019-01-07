@@ -13,6 +13,10 @@ describe('# Heap', () => {
       should(heap.pop()).be.Undefined();
       should(heap.peek()).be.Undefined();
     });
+
+    it('should throw error if there is no comparator passed', () => {
+      (() => new Heap().push()).should.throw(ERR_MSG.NO_COMPARATOR);
+    });
   });
 
   describe('push/pop/peek', () => {
