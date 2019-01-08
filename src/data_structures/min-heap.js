@@ -12,8 +12,7 @@ class MinHeap extends Heap {
     if (typeof elem !== 'number') {
       throw new TypeError(ERR_MSG.NOT_NUMBER);
     }
-
-    Heap.proptotype.push.apply(this, [elem]);
+    super.push(elem);
   }
 }
 

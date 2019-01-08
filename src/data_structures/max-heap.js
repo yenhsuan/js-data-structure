@@ -13,7 +13,7 @@ class MaxHeap extends Heap {
       throw new TypeError(ERR_MSG.NOT_NUMBER);
     }
 
-    Heap.proptotype.push.apply(this, [elem]);
+    super.push(elem);
   }
 }
 
